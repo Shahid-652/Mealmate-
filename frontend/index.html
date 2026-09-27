@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10251e">
+  <title>MealMate — shared meals made simple</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div id="auth-view" class="auth-layout">
+    <section class="auth-showcase">
+      <div class="brand"><span class="brand-mark">✳</span>MealMate</div>
+      <div class="auth-content">
+        <span class="eyebrow auth-eyebrow">YOUR MESS, BETTER TOGETHER</span>
+        <h1>Shared meals.<br>Simple math.<br>Happy living.</h1>
+        <p>One calm place for meal counts, groceries, deposits, shopping turns and the final monthly balance.</p>
+        <div class="hero-chips"><span>✦ Meal tracking</span><span>✦ Clear expenses</span><span>✦ Fair balances</span></div>
+        <div class="auth-preview">
+          <div class="auth-preview-top"><strong>Monthly snapshot</strong><span class="pill">● All in sync</span></div>
+          <div class="auth-preview-grid"><div><small>Meals this month</small><strong>186</strong></div><div><small>Meal rate</small><strong>৳68.50</strong></div></div>
+          <div class="preview-bars"><i></i><i></i><i></i><i></i><i></i></div>
+          <small>Your home, organized in one dashboard.</small>
+        </div>
+      </div>
+      <div class="auth-foot">Built for student hostels and shared living.</div>
+    </section>
+    <section class="auth-panel">
+      <div class="auth-card">
+        <span class="eyebrow">WELCOME TO MEALMATE</span>
+        <h2 id="auth-heading">Good to see you again.</h2>
+        <p class="muted" id="auth-description">Sign in to your Admin or Member account.</p>
+        <div class="tabs" role="tablist" aria-label="Account access">
+          <button type="button" data-auth-tab="login" class="active" role="tab">Log in</button>
+          <button type="button" data-auth-tab="admin" role="tab">Create mess</button>
+          <button type="button" data-auth-tab="member" role="tab">Join mess</button>
+        </div>
+        <form class="auth-form" id="login-form">
+          <label class="field">Email address<input name="email" type="email" autocomplete="username" placeholder="you@example.com" required></label>
+          <label class="field">Password<input name="password" type="password" autocomplete="current-password" required></label>
+          <button class="btn btn-primary" type="submit">Log in →</button>
+        </form>
+        <form class="auth-form" id="admin-form" hidden>
+          <label class="field">Full name<input name="name" autocomplete="name" maxlength="60" required></label>
+          <label class="field">Email address<input name="email" type="email" autocomplete="email" required></label>
+          <label class="field">Mess name<input name="messName" maxlength="60" placeholder="e.g., Green House Mess" required></label>
+          <label class="field">Password (at least 6 characters)<input name="password" type="password" minlength="6" autocomplete="new-password" required></label>
+          <button class="btn btn-primary" type="submit">Create Admin account &amp; mess →</button>
+        </form>
+        <form class="auth-form" id="member-form" hidden>
+          <label class="field">Full name<input name="name" autocomplete="name" maxlength="60" required></label>
+          <label class="field">Email address<input name="email" type="email" autocomplete="email" required></label>
+          <label class="field">Mess invite code<input name="code" placeholder="Enter the code from your admin" required></label>
+          <label class="field">Password (at least 6 characters)<input name="password" type="password" minlength="6" autocomplete="new-password" required></label>
+          <button class="btn btn-primary" type="submit">Create Member account →</button>
+        </form>
+        <div class="demo-box">
+          <strong>Try the sample mess</strong>
+          <div class="demo-row">Admin: <code>admin@mealmate.demo</code> / <code>Admin123!</code></div>
+          <div class="demo-row">Member: <code>user@mealmate.demo</code> / <code>Member123!</code></div>
+          <div>Sample invite code: <strong>MEAL-2026</strong></div>
+          <button class="btn btn-plain btn-small" id="reset-demo" type="button">Reset sample data</button>
+        </div>
+        <div class="auth-note">Frontend demo: accounts and data are saved only in this browser. Real shared access needs a backend and secure authentication.</div>
+      </div>
+    </section>
+  </div>
+
+  <div id="app-view" hidden>
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+    <div class="shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand"><span class="brand-mark">✳</span>MealMate</div>
+        <div class="mess-card"><small>CURRENT MESS</small><strong id="sidebar-mess"></strong><small id="sidebar-code"></small></div>
+        <div class="nav-caption">WORKSPACE</div>
+        <nav class="nav-list" aria-label="Main navigation">
+          <button class="nav-item active" data-nav="dashboard" type="button"><span class="nav-ico">◫</span>Overview</button>
+          <button class="nav-item admin-only" data-nav="members" type="button"><span class="nav-ico">♙</span>Members</button>
+          <button class="nav-item" data-nav="meals" type="button"><span class="nav-ico">◉</span>Daily meals</button>
+          <button class="nav-item" data-nav="expenses" type="button"><span class="nav-ico">▤</span>Expenses</button>
+          <button class="nav-item" data-nav="deposits" type="button"><span class="nav-ico">↗</span>Deposits</button>
+          <button class="nav-item" data-nav="groceries" type="button"><span class="nav-ico">▦</span>Grocery list</button>
+          <button class="nav-item" data-nav="duties" type="button"><span class="nav-ico">⌁</span>Shopping duty</button>
+          <button class="nav-item" data-nav="planner" type="button"><span class="nav-ico">▣</span>Meal planner</button>
+          <button class="nav-item" data-nav="reports" type="button"><span class="nav-ico">▥</span>Monthly summary</button>
+          <button class="nav-item" data-nav="profile" type="button"><span class="nav-ico">♙</span>My profile</button>
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="side-bottom">
+          <div class="profile-mini"><span class="avatar" id="sidebar-avatar"></span><div><strong id="sidebar-name"></strong><small id="sidebar-role"></small></div></div>
+          <button class="nav-item" id="logout-button" type="button"><span class="nav-ico">⇥</span>Log out</button>
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div class="top-actions"><button class="icon-btn mobile-menu" id="mobile-menu" type="button" aria-label="Open menu">☰</button><span class="top-title" id="top-mess"></span></div>
+          <div class="top-actions"><span class="top-date" id="top-date"></span><span class="role-badge" id="top-role"></span><span class="avatar" id="top-avatar"></span></div>
+        </header>
+        <div class="content">
+          <section class="page" id="page-dashboard">
+            <div class="page-head"><div><span class="eyebrow">YOUR MONTH AT A GLANCE</span><h1 id="hello-title"></h1><p id="hello-description"></p></div><div class="head-actions"><label class="field">Month<input class="month-input" type="month" data-month></label><span class="pill admin-only" id="dashboard-code"></span></div></div>
+            <div class="banner"><div><span class="eyebrow banner-eyebrow">MEALMATE WORKSPACE</span><h2 id="banner-title"></h2><p id="banner-message"></p></div><button class="btn btn-outline" id="dashboard-action" type="button"></button></div>
+            <div class="stat-grid">
+              <article class="stat"><span class="stat-icon">◉</span><span class="stat-label" id="dash-label-1"></span><div class="stat-value" id="dash-value-1"></div><div class="stat-hint" id="dash-hint-1"></div></article>
+              <article class="stat"><span class="stat-icon">▤</span><span class="stat-label" id="dash-label-2"></span><div class="stat-value" id="dash-value-2"></div><div class="stat-hint" id="dash-hint-2"></div></article>
+              <article class="stat"><span class="stat-icon">◈</span><span class="stat-label" id="dash-label-3"></span><div class="stat-value" id="dash-value-3"></div><div class="stat-hint" id="dash-hint-3"></div></article>
+              <article class="stat"><span class="stat-icon">↗</span><span class="stat-label" id="dash-label-4"></span><div class="stat-value" id="dash-value-4"></div><div class="stat-hint" id="dash-hint-4"></div></article>
+            </div>
+            <div class="grid-2 equal"><section class="card"><div class="card-head"><div><h2>Recent expenses</h2><p>Latest purchases and requests</p></div><button class="btn btn-small btn-light" type="button" data-nav="expenses">View all</button></div><div class="stack" id="recent-expenses"></div></section><section class="card"><div class="card-head"><div><h2>Coming up</h2><p>Shopping responsibilities</p></div><button class="btn btn-small btn-light" type="button" data-nav="duties">View duties</button></div><div class="stack" id="upcoming-duties"></div></section></div>
+          </section>
+          <section class="page" id="page-members" hidden>
+            <div class="page-head"><div><span class="eyebrow">ADMINISTRATION</span><h1>Members</h1><p>Manage access and assign another Member as Admin.</p></div><span class="pill" id="members-code"></span></div>
+            <div class="card"><div class="card-head"><div><h2>Mess members</h2><p id="members-subtitle"></p></div></div><div class="table-scroll"><table class="table"><thead><tr><th>Member</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="members-body"></tbody></table></div><p class="muted member-note">The last active Admin cannot be removed.</p></div>
+          </section>
+          <section class="page" id="page-meals" hidden>
+            <div class="page-head"><div><span class="eyebrow">DAILY RECORD</span><h1>Daily meals</h1><p>Every breakfast, lunch and dinner has its own price, set by your Admin for the selected month.</p></div><div class="head-actions"><label class="field">Month<input class="month-input" type="month" data-month></label><button class="btn btn-primary" type="button" data-open="meal">＋ Add meal entry</button></div></div>
+            <div class="stat-grid"><div class="stat"><span class="stat-label">Visible entries</span><div class="stat-value" id="meal-entries"></div></div><div class="stat"><span class="stat-label">Visible meals</span><div class="stat-value" id="meal-visible-total"></div></div><div class="stat"><span class="stat-label">Average meal rate</span><div class="stat-value" id="meal-rate"></div></div><div class="stat"><span class="stat-label">Food deposit remaining</span><div class="stat-value" id="meal-remaining"></div></div></div>
+            <div class="card pricing-card"><div class="card-head"><div><h2>Meal prices <span class="pill neutral" id="pricing-status"></span></h2><p>Prices apply to every recorded meal in this month. Average meal rate = total meal charges ÷ number of meals.</p></div></div><div class="price-list"><div><small>Breakfast</small><strong id="price-breakfast"></strong></div><div><small>Lunch</small><strong id="price-lunch"></strong></div><div><small>Dinner</small><strong id="price-dinner"></strong></div></div><div class="admin-only price-controls"><form id="pricing-form" class="pricing-form"><label class="field">Breakfast (৳)<input name="breakfast" type="number" min="0" step="0.01" required></label><label class="field">Lunch (৳)<input name="lunch" type="number" min="0" step="0.01" required></label><label class="field">Dinner (৳)<input name="dinner" type="number" min="0" step="0.01" required></label><button class="btn btn-primary" type="submit">Save prices</button></form><button class="btn btn-outline" id="pricing-lock" type="button"></button><small id="pricing-help"></small></div></div>
+            <div class="card meal-register"><div class="card-head"><div><h2>Meal register</h2><p id="meal-spent"></p></div></div><div class="table-scroll"><table class="table"><thead><tr><th>Date</th><th class="admin-only">Member</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Total</th><th>Food bill</th><th>Actions</th></tr></thead><tbody id="meals-body"></tbody></table></div></div>
+          </section>
+          <section class="page" id="page-expenses" hidden>
+            <div class="page-head"><div><span class="eyebrow">SHARED COSTS</span><h1>Expenses</h1><p>Track grocery purchases and shared bills; meal prices determine the food bill.</p></div><div class="head-actions"><label class="field">Month<input class="month-input" type="month" data-month></label><button class="btn btn-primary" type="button" data-open="expense">＋ Add expense</button></div></div>
+            <div class="stat-grid"><div class="stat"><span class="stat-label">Approved food</span><div class="stat-value" id="expense-food"></div></div><div class="stat"><span class="stat-label">Other shared</span><div class="stat-value" id="expense-other"></div></div><div class="stat"><span class="stat-label">Pending requests</span><div class="stat-value" id="expense-pending"></div></div><div class="stat"><span class="stat-label">Meal rate</span><div class="stat-value" id="expense-rate"></div></div></div>
+            <div class="card"><h2>Expense history</h2><p class="muted">Approved purchases are tracked separately from meal bills; pending amounts do not enter totals.</p><div class="table-scroll"><table class="table"><thead><tr><th>Description</th><th class="admin-only">Submitted by</th><th>Category</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead><tbody id="expenses-body"></tbody></table></div></div>
+          </section>
+          <section class="page" id="page-deposits" hidden>
+            <div class="page-head"><div><span class="eyebrow">PAYMENTS</span><h1>Deposits</h1><p>Member contributions count after Admin confirmation.</p></div><div class="head-actions"><label class="field">Month<input class="month-input" type="month" data-month></label><button class="btn btn-primary" type="button" data-open="deposit">＋ Add deposit</button></div></div>
+            <div class="stat-grid"><div class="stat"><span class="stat-label">Approved deposits</span><div class="stat-value" id="deposit-approved"></div></div><div class="stat"><span class="stat-label">Pending confirmation</span><div class="stat-value" id="deposit-pending"></div></div><div class="stat"><span class="stat-label">Active members</span><div class="stat-value" id="deposit-members"></div></div><div class="stat"><span class="stat-label">Meal rate</span><div class="stat-value" id="deposit-rate"></div></div></div>
+            <div class="card"><h2>Payment records</h2><div class="table-scroll"><table class="table"><thead><tr><th>Date</th><th class="admin-only">Member</th><th>Method</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead><tbody id="deposits-body"></tbody></table></div></div>
+          </section>
+          <section class="page" id="page-groceries" hidden>
+            <div class="page-head"><div><span class="eyebrow">STOCK UP</span><h1>Grocery list</h1><p>Plan your purchases and suggest new items.</p></div><button class="btn btn-primary" type="button" data-open="grocery" id="grocery-add-label">＋ Add item</button></div>
+            <div class="card"><div class="card-head"><div><h2>Shopping checklist</h2><p id="grocery-count"></p></div></div><div class="table-scroll"><table class="table"><thead><tr><th>Item</th><th>Quantity</th><th>Review</th><th>Progress</th><th>Action</th></tr></thead><tbody id="groceries-body"></tbody></table></div></div>
+          </section>
+          <section class="page" id="page-duties" hidden>
+            <div class="page-head"><div><span class="eyebrow">FAIR ROTATION</span><h1>Shopping duty</h1><p>Mark a task done or tell the Admin why you cannot do it. The Admin can then reassign it.</p></div><button class="btn btn-primary admin-only" type="button" data-open="duty">＋ Assign duty</button></div>
+            <div class="duty-overview" id="duty-overview" aria-live="polite"></div>
+            <div class="card"><div class="card-head"><div><h2>Assigned responsibilities</h2><p>Task updates appear here for the assigned member and Admin.</p></div></div><div class="table-scroll"><table class="table duty-table"><thead><tr><th>Date</th><th>Member</th><th>Task</th><th>Status</th><th>Update / note</th><th>Action</th></tr></thead><tbody id="duties-body"></tbody></table></div></div>
+          </section>
+          <section class="page" id="page-planner" hidden>
+            <div class="page-head"><div><span class="eyebrow">WEEKLY PLAN</span><h1>Meal planner</h1><p>Planned meals are separate from the meals actually eaten.</p></div><button class="btn btn-primary admin-only" type="button" data-open="planner">Edit weekly plan</button></div>
+            <div class="planner-grid" id="planner-days"></div><div class="notice notice-after">Add meals actually eaten in Daily meals to include them in your monthly bill.</div>
+          </section>
+          <section class="page" id="page-reports" hidden>
+            <div class="page-head"><div><span class="eyebrow">CLEAR ACCOUNTING</span><h1>Monthly summary</h1><p>Meal charges, food deposits, purchases and final balances.</p></div><label class="field">Month<input class="month-input" type="month" data-month></label></div>
+            <div class="stat-grid"><div class="stat"><span class="stat-label">Total meals</span><div class="stat-value" id="report-meals"></div></div><div class="stat"><span class="stat-label">Food spent from deposits</span><div class="stat-value" id="report-food"></div></div><div class="stat"><span class="stat-label">Average meal rate</span><div class="stat-value" id="report-rate"></div></div><div class="stat"><span class="stat-label">Food deposit remaining</span><div class="stat-value" id="report-deposits"></div></div></div>
+            <div class="card"><h2>Member balances</h2><p class="muted" id="report-formula"></p><div class="table-scroll"><table class="table"><thead><tr><th>Member</th><th>Meals</th><th>Food bill</th><th>Deposits</th><th>Balance</th></tr></thead><tbody id="reports-body"></tbody></table></div></div><div class="notice notice-after" id="report-note"></div>
+          </section>
+          <section class="page" id="page-profile" hidden>
+            <div class="page-head"><div><span class="eyebrow">YOUR ACCOUNT</span><h1>My profile</h1><p>Update your name, photo and password.</p></div></div>
+            <div class="grid-2 equal">
+              <div class="card"><h2>Personal details</h2><p class="muted">Your photo appears beside your name throughout MealMate.</p><div class="profile-hero"><span class="avatar avatar-large" id="profile-avatar"></span><div><strong id="profile-display-name"></strong><small id="profile-email-role"></small></div></div>
+                <label class="field photo-picker">Profile photo (JPG, PNG or WebP; up to 5 MB)<input id="profile-photo" type="file" accept="image/jpeg,image/png,image/webp"></label><button class="btn btn-small btn-outline" id="remove-photo" type="button">Remove photo</button>
+                <form class="profile-form" id="profile-form"><label class="field">Full name<input name="name" maxlength="60" required></label><label class="field">Email address<input name="email" type="email" disabled></label><button class="btn btn-primary" type="submit">Save profile</button></form>
+              </div>
+              <div class="card"><h2>Change password</h2><p class="muted">Enter your current password first.</p><form class="profile-form" id="password-form"><label class="field">Current password<input name="currentPassword" type="password" autocomplete="current-password" required></label><label class="field">New password<input name="newPassword" type="password" minlength="6" autocomplete="new-password" required></label><label class="field">Confirm new password<input name="confirmPassword" type="password" minlength="6" autocomplete="new-password" required></label><button class="btn btn-primary" type="submit">Update password</button></form></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <dialog class="entry-dialog" id="meal-dialog" aria-labelledby="meal-dialog-title"><div class="dialog-inner"><div class="dialog-head"><h2 id="meal-dialog-title">Add daily meals</h2><button class="icon-btn" type="button" data-close aria-label="Close">✕</button></div><form id="meal-form" class="form-grid"><label class="field">Date<input name="date" type="date" required></label><label class="field admin-only">Member<select name="userId" data-users></select></label><label class="field">Breakfast<select name="breakfast"><option value="1">Yes, 1 meal</option><option value="0">No, 0 meals</option></select></label><label class="field">Lunch<select name="lunch"><option value="1">Yes, 1 meal</option><option value="0">No, 0 meals</option></select></label><label class="field">Dinner<select name="dinner"><option value="1">Yes, 1 meal</option><option value="0">No, 0 meals</option></select></label><div class="form-actions full"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Save meals</button></div></form></div></dialog>
+  <dialog class="entry-dialog" id="expense-dialog" aria-labelledby="expense-dialog-title"><div class="dialog-inner"><div class="dialog-head"><h2 id="expense-dialog-title">Add expense</h2><button class="icon-btn" type="button" data-close aria-label="Close">✕</button></div><form id="expense-form" class="form-grid"><label class="field">Date<input name="date" type="date" required></label><label class="field admin-only">Purchased by<select name="userId" data-users></select></label><label class="field full">Description<input name="description" maxlength="80" required></label><label class="field">Category<select name="category"><option value="food">Food &amp; grocery</option><option value="electricity">Electricity / current bill</option><option value="wifi">Wi-Fi bill</option><option value="other">Other expenses</option></select></label><label class="field">Amount (৳)<input name="amount" type="number" min="0.01" step="0.01" required></label><div class="form-actions full"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Save expense</button></div></form></div></dialog>
+  <dialog class="entry-dialog" id="deposit-dialog" aria-labelledby="deposit-dialog-title"><div class="dialog-inner"><div class="dialog-head"><h2 id="deposit-dialog-title">Record deposit</h2><button class="icon-btn" type="button" data-close aria-label="Close">✕</button></div><form id="deposit-form" class="form-grid"><label class="field">Date<input name="date" type="date" required></label><label class="field admin-only">Member<select name="userId" data-users></select></label><label class="field">Amount (৳)<input name="amount" type="number" min="0.01" step="0.01" required></label><label class="field">Method<select name="method"><option>Cash</option><option>Bank transfer</option><option>bKash</option><option>Nagad</option></select></label><div class="form-actions full"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Save deposit</button></div></form></div></dialog>
+  <dialog class="entry-dialog" id="grocery-dialog" aria-labelledby="grocery-dialog-title"><div class="dialog-inner"><div class="dialog-head"><h2 id="grocery-dialog-title">Grocery item</h2><button class="icon-btn" type="button" data-close aria-label="Close">✕</button></div><form id="grocery-form" class="form-grid"><label class="field">Item name<input name="item" maxlength="60" required></label><label class="field">Quantity (e.g., 2 kg)<input name="quantity" maxlength="30" required></label><div class="form-actions full"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Save item</button></div></form></div></dialog>
+  <dialog class="entry-dialog" id="duty-dialog" aria-labelledby="duty-dialog-title"><div class="dialog-inner"><div class="dialog-head"><h2 id="duty-dialog-title">Assign shopping duty</h2><button class="icon-btn" type="button" data-close aria-label="Close">✕</button></div><form id="duty-form" class="form-grid"><label class="field">Date<input name="date" type="date" required></label><label class="field">Member<select name="userId" data-users></select></label><label class="field full">Task<input name="task" maxlength="70" required></label><div class="form-actions full"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Assign duty</button></div></form></div></dialog>
+  <dialog class="entry-dialog" id="duty-unavailable-dialog" aria-labelledby="duty-unavailable-title"><div class="dialog-inner"><div class="dialog-head"><h2 id="duty-unavailable-title">Cannot do this task</h2><button class="icon-btn" type="button" data-close aria-label="Close">✕</button></div><p class="muted" id="duty-unavailable-task"></p><form id="duty-unavailable-form" class="form-grid"><input name="dutyId" type="hidden"><label class="field full">Reason for Admin<textarea name="reason" rows="4" maxlength="300" placeholder="Tell the Admin why you cannot do this task" required></textarea></label><div class="form-actions full"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Send update</button></div></form></div></dialog>
+  <dialog class="entry-dialog" id="duty-reassign-dialog" aria-labelledby="duty-reassign-title"><div class="dialog-inner"><div class="dialog-head"><h2 id="duty-reassign-title">Reassign shopping duty</h2><button class="icon-btn" type="button" data-close aria-label="Close">✕</button></div><p class="muted" id="duty-reassign-task"></p><form id="duty-reassign-form" class="form-grid"><input name="dutyId" type="hidden"><label class="field">New member<select name="userId" data-users required></select></label><label class="field">New due date<input name="date" type="date" required></label><div class="form-actions full"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Reassign task</button></div></form></div></dialog>
+  <dialog class="entry-dialog" id="planner-dialog" aria-labelledby="planner-dialog-title"><div class="dialog-inner"><div class="dialog-head"><h2 id="planner-dialog-title">Edit weekly plan</h2><button class="icon-btn" type="button" data-close aria-label="Close">✕</button></div><form id="planner-form" class="form-grid"><label class="field">Day<select name="day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label><label class="field">Breakfast<input name="breakfast" maxlength="70" required></label><label class="field">Lunch<input name="lunch" maxlength="70" required></label><label class="field">Dinner<input name="dinner" maxlength="70" required></label><div class="form-actions full"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Save plan</button></div></form></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
